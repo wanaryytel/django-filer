@@ -18,9 +18,17 @@ from filer.fields.multistorage_file import MultiStorageFileField
 from filer.models import mixins
 from filer.models.foldermodels import Folder
 from filer.utils.compatibility import python_2_unicode_compatible, DJANGO_1_7
+from parler.managers import TranslatableManager, TranslatableQuerySet
+from parler.models import TranslatableModel, TranslatedFields
+from polymorphic.query import PolymorphicQuerySet
 
 
-class FileManager(PolymorphicManager):
+class FileQuerySet(TranslatableQuerySet, PolymorphicQuerySet):
+    pass
+
+class FileManager(PolymorphicManager, TranslatableManager):
+    queryset_class = FileQuerySet
+
     def find_all_duplicates(self):
         r = {}
         for file_obj in self.all():
@@ -35,7 +43,7 @@ class FileManager(PolymorphicManager):
 
 
 @python_2_unicode_compatible
-class File(PolymorphicModel, mixins.IconsMixin):
+class File(TranslatableModel, PolymorphicModel, mixins.IconsMixin):
     file_type = 'File'
     _icon = "file"
     folder = models.ForeignKey(Folder, verbose_name=_('folder'), related_name='all_files',
@@ -48,10 +56,12 @@ class File(PolymorphicModel, mixins.IconsMixin):
     has_all_mandatory_data = models.BooleanField(_('has all mandatory data'), default=False, editable=False)
 
     original_filename = models.CharField(_('original filename'), max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, default="", blank=True,
-        verbose_name=_('name'))
-    description = models.TextField(null=True, blank=True,
-        verbose_name=_('description'))
+    translations = TranslatedFields(
+        name = models.CharField(max_length=255, default="", blank=True,
+            verbose_name=_('name')),
+        description = models.TextField(null=True, blank=True,
+            verbose_name=_('description'))
+    )
 
     owner = models.ForeignKey(getattr(settings, 'AUTH_USER_MODEL', 'auth.User'),
         related_name='owned_%(class)ss',

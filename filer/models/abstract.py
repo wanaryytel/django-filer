@@ -20,6 +20,7 @@ from filer import settings as filer_settings
 from filer.models.filemodels import File
 from filer.utils.filer_easy_thumbnails import FilerThumbnailer
 from filer.utils.pil_exif import get_exif_for_file
+from parler.fields import TranslatedField
 
 
 class BaseImage(File):
@@ -38,8 +39,8 @@ class BaseImage(File):
     _height = models.IntegerField(null=True, blank=True)
     _width = models.IntegerField(null=True, blank=True)
 
-    default_alt_text = models.CharField(_('default alt text'), max_length=255, blank=True, null=True)
-    default_caption = models.CharField(_('default caption'), max_length=255, blank=True, null=True)
+    #default_alt_text = TranslatedField()
+    #default_caption = TranslatedField()
 
     subject_location = models.CharField(_('subject location'), max_length=64, null=True, blank=True,
                                         default=None)

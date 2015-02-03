@@ -11,6 +11,7 @@ from filer.models import File, Image
 from filer.utils.compatibility import DJANGO_1_5, unquote
 from filer.views import (popup_param, selectfolder_param, popup_status,
                          selectfolder_status)
+from parler.admin import TranslatableAdmin
 
 
 class FileAdminChangeFrom(forms.ModelForm):
@@ -19,7 +20,7 @@ class FileAdminChangeFrom(forms.ModelForm):
         exclude = ()
 
 
-class FileAdmin(PrimitivePermissionAwareModelAdmin):
+class FileAdmin(PrimitivePermissionAwareModelAdmin, TranslatableAdmin):
     list_display = ('label',)
     list_per_page = 10
     search_fields = ['name', 'original_filename', 'sha1', 'description']

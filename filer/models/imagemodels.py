@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from filer import settings as filer_settings
 from filer.models.abstract import BaseImage
 from filer.utils.loader import load_object
+from parler.models import TranslatedFields
 
 logger = logging.getLogger("filer")
 
@@ -21,7 +22,11 @@ if not filer_settings.FILER_IMAGE_MODEL:
         date_taken = models.DateTimeField(_('date taken'), null=True, blank=True,
                                           editable=False)
 
-        author = models.CharField(_('author'), max_length=255, null=True, blank=True)
+        translations2 = TranslatedFields(
+            default_alt_text = models.CharField(_('default alt text'), max_length=255, blank=True, null=True),
+            default_caption = models.CharField(_('default caption'), max_length=255, blank=True, null=True),
+            author = models.CharField(_('author'), max_length=255, null=True, blank=True)
+        )
 
         must_always_publish_author_credit = models.BooleanField(_('must always publish author credit'), default=False)
         must_always_publish_copyright = models.BooleanField(_('must always publish copyright'), default=False)
