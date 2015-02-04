@@ -23,7 +23,7 @@ class FileAdminChangeFrom(forms.ModelForm):
 class FileAdmin(TranslatableAdmin, PrimitivePermissionAwareModelAdmin):
     list_display = ('label',)
     list_per_page = 10
-    search_fields = ['translation__name', 'original_filename', 'sha1', 'translation__description']
+    search_fields = ['translations__name', 'original_filename', 'sha1', 'translations__description']
     raw_id_fields = ('owner',)
     readonly_fields = ('sha1', 'display_canonical')
 

@@ -60,7 +60,7 @@ class FolderAdmin(PrimitivePermissionAwareModelAdmin):
     exclude = ('parent',)
     list_per_page = 20
     list_filter = ('owner',)
-    search_fields = ['name', ]
+    search_fields = ['name', 'files__translations__name']
     raw_id_fields = ('owner',)
     save_as = True  # see ImageAdmin
     actions = ['move_to_clipboard', 'files_set_public', 'files_set_private',
@@ -68,7 +68,7 @@ class FolderAdmin(PrimitivePermissionAwareModelAdmin):
                'copy_files_and_folders', 'resize_images', 'rename_files']
 
     directory_listing_template = 'admin/filer/folder/directory_listing.html'
-    order_by_file_fields = ('_file_size', 'original_filename', 'name', 'owner',
+    order_by_file_fields = ('_file_size', 'original_filename', 'translations__name', 'owner',
                             'uploaded_at', 'modified_at')
 
     def get_form(self, request, obj=None, **kwargs):
@@ -438,12 +438,12 @@ class FolderAdmin(PrimitivePermissionAwareModelAdmin):
 
     def filter_file(self, qs, terms=()):
         for term in terms:
-            filters = (models.Q(name__icontains=term) |
-                       models.Q(description__icontains=term) |
+            filters = (models.Q(translations__name__icontains=term) |
+                       models.Q(translations__description__icontains=term) |
                        models.Q(original_filename__icontains=term))
             for filter_ in self.get_owner_filter_lookups():
                 filters |= models.Q(**{filter_: term})
-            qs = qs.filter(filters)
+            qs = qs.filter(filters).distinct()
         return qs
 
     @property
