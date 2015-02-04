@@ -67,7 +67,7 @@ class BaseImage(File):
         super(BaseImage, self).save(*args, **kwargs)
 
     def _check_validity(self):
-        if not self.name:
+        if self.safe_translation_getter('name') is None:
             return False
         return True
 
@@ -116,10 +116,11 @@ class BaseImage(File):
 
     @property
     def label(self):
-        if self.name in ['', None]:
+        name = self.safe_translation_getter('name')
+        if name is None:
             return self.original_filename or 'unnamed file'
         else:
-            return self.name
+            return name
 
     @property
     def width(self):

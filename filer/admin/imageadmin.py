@@ -40,7 +40,8 @@ class ImageAdminForm(forms.ModelForm):
 
 
 class ImageAdmin(FileAdmin):
-    form = ImageAdminForm
+    pass
+    #form = ImageAdminForm
 
 
 ImageAdmin.fieldsets = ImageAdmin.build_fieldsets(

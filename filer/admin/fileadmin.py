@@ -20,10 +20,10 @@ class FileAdminChangeFrom(forms.ModelForm):
         exclude = ()
 
 
-class FileAdmin(PrimitivePermissionAwareModelAdmin, TranslatableAdmin):
+class FileAdmin(TranslatableAdmin, PrimitivePermissionAwareModelAdmin):
     list_display = ('label',)
     list_per_page = 10
-    search_fields = ['name', 'original_filename', 'sha1', 'description']
+    search_fields = ['translation__name', 'original_filename', 'sha1', 'translation__description']
     raw_id_fields = ('owner',)
     readonly_fields = ('sha1', 'display_canonical')
 
@@ -33,7 +33,7 @@ class FileAdmin(PrimitivePermissionAwareModelAdmin, TranslatableAdmin):
     # render_change_form() override add and change to False.
     save_as = True
 
-    form = FileAdminChangeFrom
+    #form = FileAdminChangeFrom
 
     def get_queryset(self, request):
         if DJANGO_1_5:

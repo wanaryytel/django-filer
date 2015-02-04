@@ -186,10 +186,11 @@ class File(TranslatableModel, PolymorphicModel, mixins.IconsMixin):
 
     @property
     def label(self):
-        if self.name in ['', None]:
+        name = self.safe_translation_getter('name')
+        if name is None:
             text = self.original_filename or 'unnamed file'
         else:
-            text = self.name
+            text = name
         text = "%s" % (text,)
         return text
 
@@ -223,10 +224,11 @@ class File(TranslatableModel, PolymorphicModel, mixins.IconsMixin):
             return False
 
     def __str__(self):
-        if self.name in ('', None):
+        name = self.safe_translation_getter('name')
+        if name is None:
             text = "%s" % (self.original_filename,)
         else:
-            text = "%s" % (self.name,)
+            text = "%s" % (name,)
         return text
 
     def get_admin_url_path(self):
