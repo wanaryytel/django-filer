@@ -12,9 +12,10 @@ from filer.utils.compatibility import DJANGO_1_5, unquote
 from filer.views import (popup_param, selectfolder_param, popup_status,
                          selectfolder_status)
 from parler.admin import TranslatableAdmin
+from parler.forms import TranslatableModelForm
 
 
-class FileAdminChangeFrom(forms.ModelForm):
+class FileAdminChangeFrom(TranslatableModelForm):
     class Meta:
         model = File
         exclude = ()
@@ -33,7 +34,7 @@ class FileAdmin(TranslatableAdmin, PrimitivePermissionAwareModelAdmin):
     # render_change_form() override add and change to False.
     save_as = True
 
-    #form = FileAdminChangeFrom
+    form = FileAdminChangeFrom
 
     def get_queryset(self, request):
         if DJANGO_1_5:

@@ -6,9 +6,10 @@ from django.utils.translation import ugettext as _
 
 from filer.admin.fileadmin import FileAdmin
 from filer.models import Image
+from parler.forms import TranslatableModelForm
 
 
-class ImageAdminForm(forms.ModelForm):
+class ImageAdminForm(TranslatableModelForm):
     subject_location = forms.CharField(
         max_length=64, required=False,
         label=_('Subject location'),
@@ -40,8 +41,7 @@ class ImageAdminForm(forms.ModelForm):
 
 
 class ImageAdmin(FileAdmin):
-    pass
-    #form = ImageAdminForm
+    form = ImageAdminForm
 
 
 ImageAdmin.fieldsets = ImageAdmin.build_fieldsets(
