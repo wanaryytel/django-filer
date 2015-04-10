@@ -109,9 +109,11 @@ class FileAdmin(PrimitivePermissionAwareModelAdmin):
         url = r.get("Location", None)
         # Check against filer_file_changelist as file deletion is always made by
         # the base class
+        meta = self.model._meta
+        chglist = 'admin:%s_%s_changelist' % (meta.app_label, meta.model_name)
         if (url in ["../../../../", "../../"] or
                 url == reverse("admin:filer_file_changelist") or
-                url == reverse("admin:filer_image_changelist")):
+                url == reverse(chglist)):
             if parent_folder:
                 url = reverse('admin:filer-directory_listing',
                               kwargs={'folder_id': parent_folder.id})
