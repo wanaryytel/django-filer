@@ -187,7 +187,7 @@ class File(TranslatableModel, PolymorphicModel, mixins.IconsMixin):
     @property
     def label(self):
         name = self.safe_translation_getter('name')
-        if name is None:
+        if not name:
             text = self.original_filename or 'unnamed file'
         else:
             text = name
@@ -225,7 +225,7 @@ class File(TranslatableModel, PolymorphicModel, mixins.IconsMixin):
 
     def __str__(self):
         name = self.safe_translation_getter('name')
-        if name is None:
+        if not name:
             text = "%s" % (self.original_filename,)
         else:
             text = "%s" % (name,)

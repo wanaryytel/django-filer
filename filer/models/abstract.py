@@ -117,7 +117,7 @@ class BaseImage(File):
     @property
     def label(self):
         name = self.safe_translation_getter('name')
-        if name is None:
+        if not name:
             return self.original_filename or 'unnamed file'
         else:
             return name
