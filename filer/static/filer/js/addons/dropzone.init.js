@@ -24,7 +24,6 @@ django.jQuery(function ($) {
     var hiddenClass = 'hidden';
     var mobileClass = 'filer-dropzone-mobile';
     var objectAttachedClass = 'js-object-attached';
-    // var dataMaxFileSize = 'max-file-size';
     var minWidth = 500;
     var checkMinWidth = function (element) {
         element.toggleClass(mobileClass, element.width() < minWidth);
@@ -65,8 +64,8 @@ django.jQuery(function ($) {
             url: dropzoneUrl,
             paramName: 'file',
             maxFiles: 1,
-            // for now disabled as we don't have the correct file size limit
-            // maxFilesize: dropzone.data(dataMaxFileSize) || 20, // MB
+            // filer and django do not limit file size, let's use some ridiculously large value
+            maxFilesize: 4000000, // MB
             previewTemplate: $(dropzoneTemplateSelector).html(),
             clickable: false,
             addRemoveLinks: false,
@@ -147,9 +146,18 @@ django.jQuery(function ($) {
             Dropzone.autoDiscover = false;
         }
         dropzones.each(createDropzone);
-        $('.add-row a').on('click', function () {
-            var dropzones = $(dropzoneSelector);
-            dropzones.each(createDropzone);
-        });
+        // window.__admin_utc_offset__ is used as canary to detect Django 1.8
+        // There is no way to feature detect the new behavior implemented in Django 1.9
+        if (!window.__admin_utc_offset__) {
+            $(document).on('formset:added', function (ev, row) {
+                var dropzones = $(row).find(dropzoneSelector);
+                dropzones.each(createDropzone);
+            });
+        } else {
+            $('.add-row a').on('click', function () {
+                var dropzones = $(dropzoneSelector);
+                dropzones.each(createDropzone);
+            });
+        }
     }
 });
