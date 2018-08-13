@@ -250,3 +250,6 @@ FILER_UPLOADER_CONNECTIONS = getattr(
 FILER_DUMP_PAYLOAD = getattr(settings, 'FILER_DUMP_PAYLOAD', False)  # Whether the filer shall dump the files payload
 
 FILER_CANONICAL_URL = getattr(settings, 'FILER_CANONICAL_URL', 'canonical/')
+
+# Defaults to 4 TiB aka no limit
+FILER_MAX_FILE_SIZE = getattr(settings, 'FILER_MAX_FILE_SIZE', 4 * 1024 * 1024 * 1024 * 1024)

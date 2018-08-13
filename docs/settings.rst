@@ -150,3 +150,12 @@ Number of simultaneous AJAX uploads. Defaults to 3.
 If your database backend is SQLite it would be set to 1 by default. This allows
 to avoid ``database is locked`` errors on SQLite during multiple simultaneous
 file uploads.
+
+
+``FILER_MAX_FILE_SIZE``
+------------------------------
+
+Max allowed file upload size in bytes. This is only validated in front-end by Dropzone, so if you don't use it,
+this will not be enforced.
+
+Defaults to ``4 * 1024 * 1024 * 1024 * 1024`` - 4 TiB (aka no limit).

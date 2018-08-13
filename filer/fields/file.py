@@ -55,6 +55,7 @@ class AdminFileWidget(ForeignKeyRawIdWidget):
         # we only need the input and none of the other stuff that
         # ForeignKeyRawIdWidget adds
         hidden_input = super(ForeignKeyRawIdWidget, self).render(name, value, attrs)
+
         context = {
             'hidden_input': hidden_input,
             'lookup_url': '%s%s' % (related_url, lookup_url),
@@ -65,6 +66,7 @@ class AdminFileWidget(ForeignKeyRawIdWidget):
                 'admin/img/icon_deletelink.gif' if LTE_DJANGO_1_8
                 else 'admin/img/icon-deletelink.svg'
             ),
+            'max_file_size': filer_settings.FILER_MAX_FILE_SIZE / (1024 * 1024)  # Dropzone wants this in MiB
         }
         html = render_to_string('admin/filer/widgets/admin_file.html', context)
         return mark_safe(html)

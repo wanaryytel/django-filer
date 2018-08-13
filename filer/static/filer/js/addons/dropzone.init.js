@@ -51,6 +51,7 @@ django.jQuery(function ($) {
         var message = dropzone.find(messageSelector);
         var clearButton = dropzone.find(filerClearerSelector);
         var fileChoose = dropzone.find(fileChooseSelector);
+        var maxFileSize = dropzone.data('max-file-size');
 
         if (this.dropzone) {
             return;
@@ -65,7 +66,7 @@ django.jQuery(function ($) {
             paramName: 'file',
             maxFiles: 1,
             // filer and django do not limit file size, let's use some ridiculously large value
-            maxFilesize: 4000000, // MB
+            maxFilesize: maxFileSize,
             previewTemplate: $(dropzoneTemplateSelector).html(),
             clickable: false,
             addRemoveLinks: false,
